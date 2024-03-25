@@ -1,0 +1,44 @@
+HOW TO SUBMIT A PROGRAM HARD COPY FOR CS326
+===========================================
+
+All programs submitted for grading in CS326 must be printed from Linux 
+on one of the printers in AC212 using gedit.  This is required.  
+Programs printed anywhere else will not be graded and will be returned 
+to the student for correction and will be considered late.  The 
+program must be printed from the folder where the C language source is 
+to be placed for grading.  That is, do not print the program until it 
+is in place for grading.  Before printing, the following changes are 
+required to be made to gedit.
+
+Click the down arrow at the upper left next to gedit, and select Preferences:
+
+1. View tab:
+         Check: the first 3 boxes
+       Uncheck: everything else
+
+2. Editor tab:
+       Set the Tab width to 3
+         Check: Insert spaces instead of tabs
+       Uncheck: everything else
+
+3. Fonts & Colors tab:
+       Uncheck: Use the system fixed width font
+
+Select the menu (3 bars at the upper right) then select the printer (middle) icon.
+
+1. Under the Page Setup tab, set the following:
+       Two-sided: One Sided
+       Pages per side: 1
+       Only print: All sheets
+       Scale: 100.0%
+       Paper size: US Letter
+       Orientation: Portrait
+
+2. Under the Text Editor tab, set the following:
+       Uncheck: Print syntax highlighting
+         Check: Print line numbers
+                Number every 1 + Lines
+         Check: Print page headers
+   DO not change the Text Wrapping and Fonts default settings
+
+Select Print to print the program listing.
