@@ -1,17 +1,18 @@
 # This workflow runs the integration test for the CS326 Scheduler.
 # Author: wesdevpro 
 # Copyright 2024
-name: Scheduler Integration Test 
+name: Build and Run Scheduler Unit Tests
 on:
   push:
-    branches:
-      - dev
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - dev
-      - main
+    branches: [ "main" ]
 jobs:
   build:
-
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Unit Tests
+        run: make unit_test
+        run: echo "Unit Tests Complete"
 

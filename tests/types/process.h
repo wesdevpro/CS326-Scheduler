@@ -1,10 +1,6 @@
 #ifndef PROGRAM_STRUCTS
 #define PROGRAM_STRUCTS  
 
-/**********************************************************************/
-/*                          Program Structures                        */
-/**********************************************************************/
-/* The process tabble                                                 */
 struct process {
           int  block_time, /* TODO: Add docs                          */
                cpu_used,   /* TODO: Add docs                          */
