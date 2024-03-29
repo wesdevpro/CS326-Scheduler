@@ -14,6 +14,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run Unit Tests
         run: |
-             make unit_test
-             echo "Unit Tests Complete"
+          gcc -Wall -ansi -lm -o ./tests/unit_tests_runner.exe ./tests/unit_test_driver.c
+          ./tests/unit_tests_runner.exe
+          echo ""
+          echo "Unit Tests Complete"
 

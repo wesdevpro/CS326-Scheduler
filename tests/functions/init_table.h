@@ -2,7 +2,7 @@
 #define INIT_TABLE
 #include <stdio.h>
 #include <stdlib.h>
-#include "..\types\process.h"
+#include "../types/process.h"
 
 
 #define HEADER_ALLOC_ERR  0 /* TODO: ADD DOCS ... */
