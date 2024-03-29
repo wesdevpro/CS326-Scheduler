@@ -2,7 +2,7 @@
 #define FREE_TABLE
 #include <stdio.h>
 #include <stdlib.h>
-#include "..\types\process.h"
+#include "../types/process.h"
 
 void free_table(PROCESS *p_table);
     /* TODO: Add docs ... */

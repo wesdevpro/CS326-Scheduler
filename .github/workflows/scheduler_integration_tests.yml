@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Unit Tests
-        run: make unit_test
-        run: echo "Unit Tests Complete"
+        run: |
+             make unit_test
+             echo "Unit Tests Complete"
 
