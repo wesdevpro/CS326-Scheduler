@@ -24,5 +24,3 @@ rand_test: tests/rand_tests.c
 	gcc -Wall -ansi -lm -o ./tests/rand_test.exe ./tests/rand_tests.c
 	clear
 	./tests/rand_test.exe
-
-
