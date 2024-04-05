@@ -7,6 +7,8 @@
 
 #define HEADER_ALLOC_ERR  0 /* TODO: ADD DOCS ... */
 #define TRAILER_ALLOC_ERR 1 /* TODO: ADD DOCS ... */
+#define MAX_PID           999 
+                            /* TODO: Add DOCS ...*/
 
 PROCESS* create_table();
     /* TODO: Add docs ... */
@@ -38,7 +40,7 @@ PROCESS* create_table()
         exit(TRAILER_ALLOC_ERR); 
     }
     /* FIX: add constants for the 999 value. */
-    p_new_table->p_next_process->id             = 999;
+    p_new_table->p_next_process->id             = MAX_PID;
     p_new_table->p_next_process->p_next_process = NULL;
     
     return p_new_table;

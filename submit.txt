@@ -1,3 +1,5 @@
+GRADING CODE: 12
+
 HOW TO SUBMIT A PROGRAM HARD COPY FOR CS326
 ===========================================
 
