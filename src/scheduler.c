@@ -38,224 +38,207 @@
 /**********************************************************************/
 /*                           Symbolic Constants                       */
 /**********************************************************************/
-#define HEADER_ALLOC_ERR   0 /* TODO: ADD DOCS ... */
-#define TRAILER_ALLOC_ERR  1 /* TODO: ADD DOCS ... */
-#define MAX_PID            100 
-                             /* TODO: Add DOCS ...*/
-#define MIN_COUNT          0 /* TODO: Add DOCS ... */
-#define MAX_COUNT          10 /* TODO: ADD DOCS ... */ 
-                             /* TODO: ADD DCOS ... */
-#define INSERT_PROCESS_ERR 3 /* TODO: Add DOCS ... */
-#define ENQUEUE_ERR        4 /* TODO: Add DOCS ... */
+#define MIN_PID 1
+#define MAX_PID 100
 
-#define BLOCKED 'B' /* TODO: Add docs ... */
-#define RUNNING 'N' /* TODO: Add docs ... */
+#define HEADER_ALLOC_ERR   1 /* TODO: ADD DOCS ... */
+#define TRAILER_ALLOC_ERR  2 /* TODO: ADD DOCS ... */
+#define INSERT_ALLOC_ERR   3 /* TODO: */
+#define TABLE_TRAILER      100
+#define TABLE_HEADER       0
 
-#define READY   'R' /* TODO: Add docs ... */
-
+#define QUANTUM_PER_TICK   6 /* TODO: */
 
 /**********************************************************************/
 /*                          Program Structures                        */
 /**********************************************************************/
 /* The specifications of a process                                    */
 struct process {
-          int     block_time, /* TODO: Add docs                       */
-                  cpu_used,   /* TODO: Add docs                       */
-                  id,         /* TODO: Add docs                       */
-                  max_time,   /* TODO: Add docs                       */
-                  priority,   /* TODO: Add docs                       */
-                  quantum,    /* TODO: Add docs                       */ 
-                  wait_time;  /* TODO: Add docs                       */
-          char    state;      /* TODO: Add docs                       */
+          int  block_time, /* TODO: Add docs                          */
+               cpu_used,   /* TODO: Add docs                          */
+               id,         /* TODO: Add docs                          */
+               max_time,   /* TODO: Add docs                          */
+               priority,   /* TODO: Add docs                          */
+               quantum,    /* TODO: Add docs                          */ 
+               wait_time;  /* TODO: Add docs                          */
+          char state;      /* TODO: Add docs                          */
    struct process *p_next_process;
-                              /* TODO: Add Docs                       */
+                           /* TODO: Add Docs                          */
 };
 typedef struct process PROCESS;
 
-/* The spceification of a process queue table                         */
 struct table {
-   int     count,    /* TODO: ... */
-           next_pid; /* TODO: ... */
-   PROCESS *p_end,   /* TODO: ... */
-           *p_start; /* TODO: ... */
-    
-
+    int     count,    /* TODO: Add docs ... */
+            next_pid; /* TODO: Add docs ... */
+    PROCESS *p_front,  /* TODO: Add docs ... */
+            *p_rear;   /* TODO: Add docs ... */
 };
 typedef struct table TABLE;
 
 /**********************************************************************/
 /*                           Function Prototypes                      */
 /**********************************************************************/
-TABLE* initalize_table();
+TABLE *initalize_table();
     /* TODO: Add docs ... */
 TABLE *create_table();
     /* TODO: Add docs ... */
-void enqueue(TABLE *p_table);
+void enqueue(TABLE *p_table, int pri);
     /* TODO: Add docs ... */
-void print_table(PROCESS *p_start, int count);
+PROCESS *dequeue(TABLE *p_table);
     /* TODO: Add docs ... */
-void dequeue(TABLE *p_table);
+void print_header(const char *context, int count, int next_pid);
     /* TODO: Add docs ... */
-schedule_process(p_process_table);
+void print_table(PROCESS *p_start);
     /* TODO: Add docs ... */
-void sort_table();
-    /* TODO: Add docs ... */
-void block_process(PROCESS *p_process);
-    /* TODO: Add docs ... */
-void ready_process(PROCESS *p_process);
-    /* TODO: Add docs ... */
-void recalculate_priority(PROCESS *p_process);
-    /* TODO: Add docs ... */
+void sort_table(PROCESS *p_front, int count);
 
 /**********************************************************************/
 /*                           Main Function                            */
 /**********************************************************************/
 int main()
 {
-    int     clock_ticks = 0;  /* The total count of clock ticks       */
-    TABLE   *p_process_table; /* The table of process to be scheduled */
-    PROCESS *p_running;       /* Points to the process that's running */
-  
-    /* Initalize the process table with five processes                */
+    
+    TABLE *p_process_table;
+
+    /* TODO: Add docs .... */
     p_process_table = initalize_table();
+   
+    print_header("BEFORE", p_process_table->next_pid,
+                                             p_process_table->count);
+    print_table(p_process_table->p_front);
+    print_header("BEFORE", p_process_table->next_pid,
+                                             p_process_table->count);
+    print_table(p_process_table->p_front);
 
-    /* Loop processing a 100 processes on the cpu                     */
-    while(p_running = get_running(p_process_table),
-          p_process_table->next_pid <= MAX_PID)
-    { 
-        /* Schedule a process to run, if none are already running */
-        if(p_running == NULL)
-        {
-            printf("\n\nBEFORE SCHEDULING CPU:  NEXT PID = %d, Number of Processes = %d", p_process_table->next_pid, p_process_table->count);
-            print_table(p_process_table->p_start, p_process_table->count);
-           /*  
-           schedule_process(p_process_table); */
-           printf("\n\nAFTER SCHEDULING CPU:  NEXT PID = %d, Number of Processes = %d", p_process_table->next_pid, p_process_table->count);
-           print_table(p_process_table->p_start, p_process_table->count);
-        }
-        else
-        {
-            /* Terminate the running process, if the process has      */ 
-            /* reached it's max time on the cpu                       */
-            if(p_running->clock_time == p_running->max_time)
-            {
-                
-            }
-           
-            /* Block the running process, if the process has reached  */
-            /* its block time                                         */
-            if(p_running->cpu_used == p_running->block_time)
-            {
-                block_process(p_running);
 
-            }
-        }
-
-        /* Insert a new process, if the random is one and the table   */
-        /* contains less than ten elements                            */
-        if((rand() % 5) + 1 == 1 && p_process_table->count < MAX_COUNT)
-        {
-            enqueue(p_process_table);
-        }
-
-        /* Unblock a process, if the random number is equal one       */
-        if((rand() % 20) + 1 == 1)
-        {
-            printf("\n Should block!");
-        }
-       
-        /
-        clock_ticks++;
-    }
-
-    printf("\n\n\n\n\n");
     return 0;
 }
 
-/**********************************************************************/
-/*     Create and initalize the process table with five processes     */
-/**********************************************************************/
-TABLE* initalize_table()
-{
-    TABLE *p_table; /* Points to the new process table                */
-    
-    p_table = create_table();
-    enqueue(p_table);
-    enqueue(p_table);
-    enqueue(p_table);
-    enqueue(p_table);
-    enqueue(p_table);
-    return p_table;
-}
+
 
 /**********************************************************************/
-/*         Create and allocate memory for a new process table         */
+/*                    TODO: Add docs                                  */
 /**********************************************************************/
-TABLE *create_table()
+TABLE *initalize_table()
 {
-    TABLE *p_new_table; /* Points to the new process table            */
+    TABLE *p_new_table;
 
-    if((p_new_table = (TABLE *) malloc(sizeof(TABLE))) == NULL)
-    {
-        printf("\nError %d in create table.", HEADER_ALLOC_ERR);
-        printf("\nCannot allocate memory for the table header.");
-        printf("\nThe program is aborting.");
-        exit(HEADER_ALLOC_ERR);
-    } 
-    p_new_table->count     = MIN_COUNT;
-    p_new_table->next_pid  = 1;
-    p_new_table->p_start  = NULL;
-    p_new_table->p_end = NULL;
+    p_new_table = create_table();
+    enqueue(p_new_table, 5);
+    enqueue(p_new_table, -1);
+    enqueue(p_new_table, 3);
+    enqueue(p_new_table, 0);
+    enqueue(p_new_table, -3);
     return p_new_table;
 }
 
 /**********************************************************************/
 /*                    TODO: Add docs                                  */
 /**********************************************************************/
-void enqueue(TABLE *p_table)
+TABLE *create_table()
 {
-    PROCESS *p_new; /* TODO: Add docs ... */
-    
-    if((p_new = (PROCESS *) malloc(sizeof(PROCESS))) == NULL) 
+    TABLE *p_new_table;
+
+    if((p_new_table = (TABLE *) malloc(sizeof(TABLE))) == NULL) 
     {
         /* FIX: UPDATE THE PRINT STATEMENTS  ... */
         printf("\nError %d in create table.", TRAILER_ALLOC_ERR);
         printf("\nCannot allocate memory for the table trailer.");
         printf("\nThe program is aborting.");
-        exit(INSERT_PROCESS_ERR);
+        exit(4); /* FIX: Fix this .... */
     }
-    p_new->id = p_table->next_pid;
-    p_new->cpu_used   = 0;
-    p_new->priority   = 0;
-    p_new->quantum    = 0;
-    p_new->wait_time  = 0;
-    p_new->state      = 'R';
-    p_new->max_time   = (rand() % 18) + 1;
-    if(((rand() % 3) + 1) == 1)
-        p_new->block_time = 6;
-    else
-        p_new->block_time = (int) (rand() % 5) + 1;
-   
-    if(p_table->count == MIN_COUNT)
-        p_table->p_start = p_new;
-    else
-        p_table->p_end->p_next_process = p_new;
-    p_table->p_end = p_new;
-    p_table->count++;
-    p_table->next_pid++;
-    return;
+    p_new_table->count    = 0;
+    p_new_table->next_pid = MIN_PID;
+    return p_new_table;
 }
 
 /**********************************************************************/
 /*                    TODO: Add docs                                  */
 /**********************************************************************/
-void print_table(PROCESS *p_start, int count)
+void enqueue(TABLE *p_table, int pri)
 {
-    int counter; /* TODO: Add dcos .. */
+    PROCESS **pp_front = &p_table->p_front,
+                    /* TODO: Add docs ... */
+            *p_new, /* TODO: Add docs ... */
+            **pp_rear  = &p_table->p_rear;
+                    /* TODO: Add docs ... */
+    
+    if(p_table->count < MAX_PID)
+    {
+        if((p_new = (PROCESS *) malloc(sizeof(PROCESS))) == NULL) 
+        {
+            /* FIX: UPDATE THE PRINT STATEMENTS  ... */
+            printf("\nError %d in create table.", TRAILER_ALLOC_ERR);
+            printf("\nCannot allocate memory for the table trailer.");
+            printf("\nThe program is aborting.");
+            exit(4); /* FIX: Fix this .... */
+        }
+        p_new->id = p_table->next_pid;
+        p_new->cpu_used       = 0;
+        p_new->priority       = pri;
+        p_new->quantum        = 0;
+        p_new->wait_time      = 0;
+        p_new->state          = 'R';
+        p_new->max_time       = (rand() % 18) + 1;
+        p_new->p_next_process = NULL;
+        if(((rand() % 3) + 1) == 1)
+            p_new->block_time = 6;
+        else
+            p_new->block_time = (int) (rand() % 5) + 1;
 
-    printf("\nPID   CPU Used   MAX TIME   SATE   PRI   QUANTUM USED");
+        if(*pp_front == NULL)
+            *pp_front = p_new;
+        else
+            (*pp_rear)->p_next_process = p_new;
+        *pp_rear = p_new;
+        p_table->count++;
+        p_table->next_pid++;
+    }
+    return;
+}
+
+
+/**********************************************************************/
+/*                    TODO: Add docs                                  */
+/**********************************************************************/
+PROCESS *dequeue(TABLE *p_table)
+{
+    PROCESS **pp_front = &p_table->p_front,
+            /* TODO: Add docs ... */
+            **pp_rear  = &p_table->p_rear,
+            /* TODO: ADD docs ... */
+            *p_top_process;
+            /* TODO: Add docs ... */
+    if(pp_front != NULL)
+    {
+        p_top_process = *pp_front;
+        *pp_front     = (*pp_front)->p_next_process;
+        if(*pp_front == NULL)
+            *pp_rear = NULL;
+        p_top_process->p_next_process = NULL;
+    } 
+    return p_top_process;
+}
+
+/**********************************************************************/
+/*                    TODO: Add docs                                  */
+/**********************************************************************/
+void print_header(const char *context, int count, int next_pid)
+{
+    printf("\n\n%s SCHEDULING CPU:", context);
+    printf("  NEXT PID = %d,", count);
+    printf("   Number of Processes = %d", next_pid);
+}
+
+
+/**********************************************************************/
+/*                    TODO: Add docs                                  */
+/**********************************************************************/
+void print_table(PROCESS *p_start)
+{
+    printf("\nPID   CPU Used   MAX Time   SATE   PRI   QUANTUM USED");
     printf("   BLK TIME   WAIT TKS");
-    for(counter = 1; counter <= count; counter++)
+    while(p_start != NULL)
     {
         printf("\n%3d%8d", p_start->id,         p_start->cpu_used);
         printf("%11d%8c",  p_start->max_time,   p_start->state);
@@ -269,44 +252,28 @@ void print_table(PROCESS *p_start, int count)
 /**********************************************************************/
 /*                    TODO: Add docs                                  */
 /**********************************************************************/
-void dequeue(TABLE *p_table)
+void sort_table(PROCESS *p_front, int count)
 {
-    PROCESS *p_process; /* TODO: ADD DOCS ...*/
+    int     outer,
+            inner;
+            /* TODO: Add docs ... */
+    PROCESS *p_next     = p_front->p_next_process,
+            *p_previous = NULL;
+            /* TODO: ADD docs ... */
+  
+    for(outer = 1; outer < count; outer++)
+    {
+        for(inner = 1; inner < count; inner++)
+        {
+              if(p_next->priority < p_front->priority) 
+                /* swap here */
+             
+        }
 
-    if(p_table->count == MIN_COUNT)
-    {
-        p_process        = p_table->p_start;
-        p_table->p_start =  NULL;
-        p_table->p_end   = NULL;
     }
-    else
-    {
-        p_process        = p_table->p_start;
-        p_table->p_start = p_table->p_start->p_next_process; 
-    }
-    p_table->count--;
-    free(p_process);
     return;
 }
 
 /**********************************************************************/
 /*                    TODO: Add docs                                  */
 /**********************************************************************/
-void block_process(PROCESS *p_process)
-{
-    p_process->state   = BLOCKED;
-    p_process->quanrum = 0;
-    recalculate_prioriity(p_process);
-}
-
-/**********************************************************************/
-/*                    TODO: Add docs                                  */
-/**********************************************************************/
-void recalculate_priority(PROCESS *p_process)
-{
-    p_proces->priority = 
-                    (abs(p_process->priority) + p_process->quantum) / 2;
-    if(p_process->state == BLOCKED)
-        priority *= -1;
-    return;
-}
